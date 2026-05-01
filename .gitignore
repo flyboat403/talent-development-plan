@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Output files (generated, should not be committed)
+output/
+
+# Test files (local test data, should not be committed)
+test/*.md
+test/*.txt
+test/*.json
+test_output.json
+
+# Sisyphus state
+.sisyphus/
+.sisyphus/boulder.json
