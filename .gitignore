@@ -15,3 +15,4 @@ test_output.json
 # Sisyphus state
 .sisyphus/
 .sisyphus/boulder.json
+AGENTS.md
