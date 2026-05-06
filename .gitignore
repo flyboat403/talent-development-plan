@@ -12,7 +12,10 @@ test/*.txt
 test/*.json
 test_output.json
 
+references/images/
+
 # Sisyphus state
 .sisyphus/
 .sisyphus/boulder.json
 AGENTS.md
+references/images/
