@@ -29,7 +29,7 @@ def preprocess_docx(input_file):
         tag = element.tag.split("}")[-1] if "}" in element.tag else element.tag
 
         if tag == "p":
-            text = element.text or ""
+            text = ""
             for run in element.findall(".//{http://schemas.openxmlformats.org/wordprocessingml/2006/main}t"):
                 if run.text:
                     text += run.text

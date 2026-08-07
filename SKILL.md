@@ -1,6 +1,6 @@
 ---
 name: talent-development-plan
-description: "编制职业教育专业人才培养方案。面向职业院校的专业带头人、专业负责人实施专业建设等场景。当用户提到人才培养方案编制、专业建设方案、课程体系设计、职教专业规划、专业教学标准应用、职业分析报告整合、中职高职培养方案要求、职业教育课程设置等任务时，自动触发此技能。技能接收用户上传或输入的职业分析报告，预处理并遵循《专业教学标准》，引入国家规定的职业教育公共基础课列表，按内置模板结构生成具有较高参考价值的 docx 文档类型的专业人才培养方案。"
+description: "编制职业教育专业人才培养方案。面向职业院校的专业带头人、专业负责人实施专业建设等场景。当用户提到人才培养方案编制、专业建设方案、课程体系设计、专业教学标准应用、职业分析报告整合、中职高职培养方案要求、职业教育课程设置等任务时，自动触发此技能。技能接收用户上传或输入的职业分析报告，预处理并遵循《专业教学标准》，引入国家规定的职业教育公共基础课列表，按内置模板结构生成具有较高参考价值的 docx 文档类型的专业人才培养方案。"
 dependency:
   python:
     - markitdown==0.1.1
@@ -13,17 +13,11 @@ dependency:
 
 # 职业教育人才培养方案编制技能
 
-基于教学标准与行业报告生成**符合国家规范的职业院校人才培养方案（Markdown → DOCX）**。
+基于教学标准与职业分析报告等生成**符合国家规范的职业院校人才培养方案**。
 
 ## 触发条件
 
-用户提出以下任一需求时触发此技能：
-
-- 编制/撰写/生成 **人才培养方案**
-- 基于 **教学标准 + 职业分析报告** 生成培养方案
-- 中职 / 高职 / **中高职一体化** 培养方案设计
-- 专业建设方案、课程体系设计
-- 专业教学标准应用、职业分析报告整合
+触发条件见 frontmatter `description` 中的场景与关键词（人才培养方案编制、专业建设方案、课程体系设计、教学标准应用、职业分析报告整合、中职/高职/中高职一体化方案、职业教育课程设置）。技能被触发后，按以下流程执行。
 
 ## 输入材料
 
@@ -181,14 +175,8 @@ python scripts/preprocess.py <input_file> -o <output.md>
 | **典型工作任务** | 岗位任务分解表（任务→能力→知识点映射） |
 | **学习领域分析** | 各学习领域（LD）的学习目标、学习内容、教学方法、评价方式→ ⚡课程目标核心数据源，详见规则D |
 | **学习情境设计** | 每个学习领域下的具体情境（名称、学时、学习目标、学习内容、教学方式、评价方式） |
-| **职业技能等级证书** | 建议考取的X证书/职业资格证书 |
+| **职业技能等级证书** | 建议考取的职业技能等级证书/职业资格证书 |
 | **人才需求量化** | 区域内年需求量、薪资水平等（如有） |
-
-### 映射关系参考（内置）
-
-**教学标准→方案**：专业名称/代码/入学要求/修业年限→第1-3章；职业面向→第4章表1（与报告合并）；**培养目标→第5章（一），必须引用原文并按其结构撰写**；培养规格→第5章（二），能力目标需与报告职业能力对等合并；课程清单→第6章表5/6/7（与学习领域合并）；核心课教学内容与要求→表6主要内容/教学要求；实践教学→表8；学时→合规校验基准；师资/设施/质量保障→第8章；毕业要求→第9章。
-
-**报告→方案**：工作任务→表3；**职业能力汇总表→第5章（二）能力目标（双源对等合并）**；学习领域(LD)学习目标/内容/方法/评价→表5-7课程目标/主要内容/教学要求（核心融合规则见规则D）；学习情境→对应课程主要内容/教学要求（项目案例载体，非独立实训）；行业趋势→第8章；证书→第4章表1。**⚡ 表3职业能力列禁止使用代码（如"1.1素描..."），必须写入具体的职业能力描述文字，详见下方"表3生成规范"**。
 
 ### Phase 4：融合数据并逐章生成
 
@@ -206,8 +194,13 @@ python scripts/preprocess.py <input_file> -o <output.md>
 | **培养规格** | 模板 + 教学标准 + 职业分析报告职业能力 | 三源整合：素质目标以模板中的**1. 职业素质要求**为主，**职业知识要求**以标准为主、报告补充；**能力目标对等整合**——标准能力条目+报告职业能力汇总表合并去重。详见下方"培养规格三源整合" |
 | **课程体系** | 教学标准 + 职业分析报告学习领域 | **双源构建+合并**：教学标准课程与职业分析报告学习领域双向映射，合并相同/类似课程，学习领域无对应课程时新增转化。详见下方"课程体系双源构建与合并"。**⚡ 合并完成后，必须进入"课程体系交互确认"环节，经用户确认/调整后才能固化到最终方案。** |
 | **教学进程安排表** | 教学标准 + 学时计算规则 + 职业分析报告建议学期 | 按学期分配课程，遵循下方"教学进程学期编排规则"，确保总学时达标 |
-| **实施保障** | 教学标准 + 报告 | 师资队伍、实训条件、校企合作等 |
-| **毕业要求** | 教学标准 | 毕业学分/证书/考核等条件 |
+| **实施保障** | 教学标准第9/10/11部分 + 模板 | 师资队伍、教学设施、教学资源、质量保障。**MANDATORY - READ ENTIRE FILE**: 生成此章节前必须读取 [`references/implementation-guarantee.md`](references/implementation-guarantee.md) 获取字段提取规则与国标量化指标（中职20:1/高职25:1、双师50%/60%等） |
+| **毕业要求** | 教学标准第11.2 | 毕业条件、达成度、职业技能等级证书学分转化 |
+| **表3（职业岗位及典型工作任务分析）** | 职业分析报告（主） | 数据来源于报告的**典型工作任务分析**和**职业能力汇总表**，吸收教学标准核心课详表。详见下方"表3生成规范"。**⚡ 职业能力列禁止使用代码（如"1.1素描""Z001"），必须写入完整的职业能力描述文字** |
+| **职业能力汇总表 → 培养规格能力目标** | 教学标准 + 职业分析报告 | **双源对等合并**：标准能力条目（集合A）与报告专业能力（Z系列）逐项比对合并，方法能力（F系列）纳入能力目标，社会能力（S系列）纳入素质目标。详见下方"培养规格三源整合" |
+| **学习领域/学习情境 → 专业课程** | 职业分析报告 | 学习领域（LD）学习目标/内容/方法/评价 → 表5-7课程目标/主要内容/教学要求（核心融合规则见规则D）；学习情境 → 对应课程"主要内容"（项目案例载体，非独立实训）。详见下方"课程体系双源构建与合并"及规则D |
+| **证书/技能竞赛 → 课程关联** | 职业分析报告 + 教学标准 | 职业技能等级证书映射支撑课程，考核点融入课程目标/主要内容；技能竞赛赛项映射课程或综合实训。详见下方"赛证融通操作规则" |
+| **行业趋势 → 实施保障/职业面向** | 职业分析报告 | 报告行业背景、区域产业对接情况 → 第8章实施保障及职业面向说明 |
 
 #### 职业面向合并策略（Phase 4 必经环节）
 
@@ -226,6 +219,39 @@ python scripts/preprocess.py <input_file> -o <output.md>
    - "职业技能等级证书/资格证书"：两源合并去重
 4. **输出格式**：以标准样例表格呈现（行业→职业类→主要岗位→职业资格），"主要岗位"列同时展示大类和细分岗位
 
+#### 接续专业生成规则（Phase 4 必经环节）
+
+**数据来源**：接续专业信息**必须从专业简介中获取**（`assets/moe_pdfs_md/` 中对应专业类文件的"# 接续专业举例"章节），不得从专业教学标准提取，不得从职业分析报告提取，不得由 LLM 凭空推理。
+
+**生成规则**：
+
+1. 从**专业简介**中提取该专业（按专业代码定位）"# 接续专业举例"章节内容，包括三类接续举例：
+   - **接续高职专科专业举例**（中职→专科）
+   - **接续高职本科专业举例**（中职/专科→职教本科）
+   - **接续普通本科专业举例**（升学路径）
+2. 在方案"职业面向"章节（表1之后）按模板格式输出"（二）接续专业"，保留专业简介原文专业名称及代码
+3. **若专业简介无接续专业信息**：根据专业大类代码和国家专业目录推断同大类对应的高层次专业，标注"（根据专业目录推断）"；不得虚构专业代码
+
+**边界规则**：
+- 专业简介已提供时，原样采用专业简介内容
+- 专业简介未提供时，基于 `assets/职业教育专业目录.xlsx` 同专业大类的高层次专业推断，并显式标注推断来源
+- 中职方案接续专业为必填项；高职方案如有升学衔接要求则填写
+
+#### 赛证融通操作规则（Phase 4 必经环节）
+
+**MANDATORY - READ ENTIRE FILE**: Before generating certificate/competition associations in the curriculum system, you MUST read [`references/competition-certification.md`](references/competition-certification.md) (~55 lines) completely to obtain the 4-step mapping rules (certificate-course mapping, assessment points integration, competition-course mapping, output) and boundary rules.
+
+**Do NOT load**: `references/teaching-schedule-rules.md` or `references/course-objective-generation.md` for this task.
+
+**设计理念**："岗课赛证融通"是职业教育课程设置的核心要求——**岗位**对接课程、**证书**影响课程内容、**竞赛**提升课程高度。本环节将证书和技能竞赛信息显性化到课程体系，避免"证书是证书、课程是课程"两张皮。
+
+详细规则见 `references/competition-certification.md`，包含：
+- Step 1：证书—课程映射（支撑课程定位规则）
+- Step 2：证书考核点融入课程（课程目标/主要内容标注）
+- Step 3：技能竞赛—课程映射
+- Step 4：输出（表1证书列、课程关联标注）
+- 边界规则（不虚构证书/竞赛、不改课程结构）
+
 #### 培养目标生成规范（Phase 4 必经环节）
 
 培养目标**必须引用专业教学标准培养目标原文并按其结构撰写**，补充职业面向主要岗位。禁止脱离教学标准自行编写。
@@ -238,7 +264,7 @@ python scripts/preprocess.py <input_file> -o <output.md>
 
 #### 表3生成规范（职业岗位及典型工作任务分析表）
 
-表3的数据来源于**职业分析报告的典型工作任务分析**和**职业能力汇总表**。生成时必须遵守以下规则：
+表3的数据来源于用户上传的**职业分析报告的典型工作任务分析**和**职业能力汇总表**，并吸收专业教学标准的**专业核心课程主要教学内容与要求**表格。生成时必须遵守以下规则：
 
 **禁止使用代码**：职业能力列不得填写代码编号（如"1.1素描、色彩构成""Z001汽车维护能力"），必须写入**具体的职业能力描述文字**。
 
@@ -266,6 +292,12 @@ python scripts/preprocess.py <input_file> -o <output.md>
 #### 培养规格三源整合（Phase 4 必经环节）
 
 培养规格的三维目标（职业素质/职业知识/职业能力）必须同时引用模板、教学标准和职业分析报告，**能力目标尤其需要对等整合两源**。
+
+> **生成前自问（思维框架）**：
+> - **维度判定**：这条原文是知识（掌握/了解/理解）还是能力（具有/能/能够）还是素质（树立/养成/具备...意识/精神）？归属不清就不能直接复制。
+> - **来源追踪**：这条目标来自模板/标准/报告的哪一处？能指出处才保留，指不出则属臆造。
+> - **能力覆盖**：报告职业能力汇总表（Z系列）每条能力，在能力目标里找到对应项了吗？找不齐就是遗漏。
+> - **句式规范**：能力条目是否满足"能力+行动"结构？若写的是"能进行维护"这种无行动对象表述，需改写为"具备XX能力，能够完成XX任务"。
 
 **教学标准培养规格条目拆分策略**：
 
@@ -342,6 +374,8 @@ python scripts/preprocess.py <input_file> -o <output.md>
 
 **课程学时分配策略**（教学标准通常只给总学时和比例，不给每门课具体学时）：
 
+> **注**：本策略确定每门课程的**总学时**（课程级分配）。课程确定后，将其按周学时/学期分布编排到教学进程表，见下方"教学进程学期编排规则"（周学时=课程总学时÷开设周数）。
+
 | 课程类型 | 学时来源 | 分配方法 |
 |:---------|:---------|:---------|
 | **公共基础课** | `references/national-standards.md`中的标准学时 + 模板表4学时 | 优先采用国标建议学时，参照模板表4数值，可根据本校实际微调 |
@@ -351,6 +385,8 @@ python scripts/preprocess.py <input_file> -o <output.md>
 | **集中实践** | 教学标准有明确周数 → 按每周30学时折算 | 认知实习1周=30学时，岗位实习按教学标准规定（一般6个月，但折算学时需符合国标） |
 
 **校验**：所有课程学时之和 + 集中实践学时 = 教学标准规定的总学时（如中职3160学时）。若不匹配，按比例调整专业课学时，公共基础课学时不动。
+
+**学分换算**：每门**专业课程**学时确定后，按 `references/national-standards.md` 4.2.1 换算学分——**优先整除16，其次整除18，均不能整除则向下取整**（⌊学时÷16⌋）；纯实践课按30学时/学分。**公共基础课学分遵循模板表4**（规则B），不适用本规则。禁止随意给学分，必须可追溯到换算规则。
 
 **Step 5：输出合并结果**
 
@@ -396,6 +432,8 @@ python scripts/preprocess.py <input_file> -o <output.md>
 ### Phase 5：输出（Markdown → DOCX）
 
 > **默认行为**：无论用户是否明确要求 DOCX，**始终**先输出 Markdown 文档，再转换为 DOCX。这是本技能的标准交付格式。
+>
+> **流程顺序（严格遵守）**：`Step 5.1 生成MD → Step 5.2 自检MD内容（通过后才继续）→ Step 5.3 转换为DOCX+后处理 → Step 5.4 自检DOCX格式`。**自检通过后才允许转换 DOCX**，避免因 MD 内容问题产生重复转换返工。
 
 #### Step 5.1：生成完整 Markdown 文档
 
@@ -415,7 +453,7 @@ python scripts/preprocess.py <input_file> -o <output.md>
    - 原因：pandoc从MD文件所在目录执行时，相对路径才能正确解析
 4. **脚本特性**：自动按最长课程名计算列宽；长课程名自动换行；图片宽度自适应（默认≥1400px，按需扩展至2000px）；5类课程层次化布局
 5. **中文显示**：Linux用`wqy-microhei`/`wqy-zenhei`，Windows用`msyh.ttc`/`simhei.ttf`，macOS用`PingFang`；加载失败时回退至系统默认字体
-6. **嵌入校验**：pandoc转换后，**必须检查DOCX中是否包含图片**（`python-docx`读取`inline_shapes`长度≥1）；若图片缺失，pandoc仅输出WARNING不报错，DOCX中图片位置会退化为纯文本——必须主动发现并修复
+6. **嵌入校验（归属 Step 5.4）**：pandoc转换后，**必须检查DOCX中是否包含图片**（`python-docx`读取`inline_shapes`长度≥1）；若图片缺失，pandoc仅输出WARNING不报错，DOCX中图片位置会退化为纯文本——必须主动发现并修复
 
 ```bash
 # Step 1：生成架构图到输出目录的images子目录
@@ -466,12 +504,34 @@ python scripts/create_curriculum_image.py --data '{"major_name":"XX专业","leve
 详细规则见 `references/course-objective-generation.md`，包含：
 - D.1 数据源定义（源A教学标准 + 源B职业分析报告）
 - D.2 课程 ↔ 学习领域映射方法
-- D.3 课程目标三维分类生成规则（知识/能力/素质）
+- D.3 课程目标三维分类生成规则（知识/能力/素质，**素质条目必须融入课程思政元素**）
 - D.4 "主要内容"列生成规则
 - D.5 来源标注
 - 双源匹配示例
 
-#### Step 5.2：转换为 DOCX
+#### Step 5.2：自检清单（MD内容，转DOCX前）
+
+**MANDATORY - READ ENTIRE FILE**: Before converting to DOCX, you MUST read [`references/self-check-list.md`](references/self-check-list.md) completely and check each item in **阶段一（MD内容自检）**. Mark completed items; for incomplete items, fix immediately in the Markdown.
+
+**Do NOT load**: Other reference files not needed for self-check.
+
+**执行时机**：在 Step 5.1 生成完整 Markdown **之后、Step 5.3 转换为 DOCX 之前**执行。**阶段一全部通过后才允许转换**，禁止携带未通过项直接转换（否则会产生重复转换返工）。
+
+自检清单阶段一（MD内容）覆盖：
+- 基本完整性（章节覆盖、表格列数、无占位符、学时合计）
+- 规则A（架构图生成与相对路径引用）
+- 规则B（公共基础课表）
+- 规则C（职业面向与培养目标）
+- 规则D（培养规格与课程目标）
+- 表3检查（职业能力列无代码）
+- 课程体系检查
+- 教学进程安排表检查
+- 双源整合检查
+- 数据与格式标注检查（学时合规、表9/表10一致性）
+
+**未通过处理**：若阶段一某项未通过，先按 `references/error-recovery.md` 修复 Markdown，再重新核对，通过后才进入 Step 5.3。
+
+#### Step 5.3：转换为 DOCX
 
 使用 pandoc 将 Markdown 转换为 Word 文档：
 
@@ -510,34 +570,30 @@ python <skill_dir>/scripts/postprocess_docx.py \
 4. 若表格无边框：确认后处理脚本已正确执行
 5. 转换时参照 `references/人才培养方案模板.docx` 的格式风格（页边距、标题字体、表格样式等），确保符合正式公文排版规范
 
-#### Step 5.3：自检清单
+#### Step 5.4：自检清单（DOCX格式，转换后）
 
-**MANDATORY - READ ENTIRE FILE**: Before delivering final output, you MUST read [`references/self-check-list.md`](references/self-check-list.md) (~70 lines) completely and check each item. Mark completed items; for incomplete items, fix immediately or note for continuation.
+**MANDATORY - READ ENTIRE FILE**: After DOCX conversion and postprocessing, you MUST read [`references/self-check-list.md`](references/self-check-list.md) completely and check each item in **阶段二（DOCX格式自检）**. Mark completed items; for incomplete items, fix immediately or note for continuation.
 
 **Do NOT load**: Other reference files not needed for self-check.
 
-自检清单包含40项核对要求，覆盖：
-- 基本完整性（章节覆盖、表格列数、无占位符）
-- 规则A（课程体系架构图）
-- 规则B（公共基础课表）
-- 规则C（职业面向与培养目标）
-- 规则D（培养规格与课程目标）
-- 表3检查（职业能力列无代码）
-- 课程体系检查
-- 教学进程安排表检查
-- 双源整合检查
-- DOCX格式检查
+**执行时机**：在 Step 5.3 转换为 DOCX 并完成后处理 **之后**执行，核对 DOCX 格式相关项：
 
-详细清单见 `references/self-check-list.md`。
+- 规则A补充：inline_shapes≥1（图片嵌入成功）
+- DOCX格式：文件可打开、表格均有边框、表头加粗居中、正文字号统一、页边距正确
+- 最终交付：输出目录含方案.md/方案.docx/images架构图，无中间产物残留
 
-#### 错误恢复（自检未通过时执行）
+**未通过处理**：若阶段二某项未通过（如图片缺失、表格无边框），修复后需**重新执行 Step 5.3 转换+后处理**，并重新核对阶段二。若图片缺失，优先检查图片文件/路径/pandoc执行目录。
 
-**当自检清单某项未通过时**，必须按 `references/error-recovery.md` 执行修复：
+#### 错误恢复（任一阶段自检未通过时执行）
+
+**当 Step 5.2（MD内容）或 Step 5.4（DOCX格式）自检某项未通过时**，必须按 `references/error-recovery.md` 执行修复：
 
 1. **查阅错误恢复指南**：打开 `references/error-recovery.md`，定位对应章节
 2. **按步骤修复**：执行修复步骤，而非跳过或标注"建议"
 3. **重新校验**：修复后重新执行相关自检项
 4. **最多3轮修复**：超过3轮仍未通过时，在方案末尾标注问题并说明无法修复的原因
+
+> **修复后流程**：若修改的是 MD（Step 5.2 未通过），修复后**重新核对 Step 5.2**，通过后再转换；若修改的是 DOCX（Step 5.4 未通过），修复后需**重新执行 Step 5.3 转换+后处理**再核对。
 
 常见错误快速定位：
 - 学时校验失败 → 第一章
@@ -604,14 +660,16 @@ Phase 0→1→2→3→Phase 4（职业面向合并策略→培养目标生成规
 | `assets/人才培养方案-中职模板.md` | Phase 1（中职或一体化中职段）**MANDATORY** | 中职层次完整格式模板（含10章、11张标准表格） |
 | `assets/人才培养方案-高职模板.md` | Phase 1（高职或一体化高职段）**MANDATORY** | 高职层次完整格式模板（含培养规格深化、证书要求等） |
 | `references/national-standards.md` | Phase 2 **MANDATORY** | 国家标准公共基础课完整列表、学时学分底线要求、术语表 |
-| `references/course-objective-generation.md` | Phase 4（生成表5/6/7课程目标时）**MANDATORY** | 专业课程目标双源整合规则（数据源定义、映射规则、三维分类、示例） |
+| `references/course-objective-generation.md` | Phase 4（生成表5/6/7课程目标时）**MANDATORY** | 专业课程目标双源整合规则（数据源定义、映射规则、三维分类含课程思政、示例） |
+| `references/competition-certification.md` | Phase 4（生成证书/竞赛关联时）**MANDATORY** | 赛证融通操作规则（证书-课程映射、考核点融入、竞赛-课程映射、边界规则） |
+| `references/implementation-guarantee.md` | Phase 4（生成第8章实施保障时）**MANDATORY** | 实施保障生成规则（师资/设施/资源/质量保障字段提取，中职vs高职国标量化指标对照表） |
 | `references/teaching-schedule-rules.md` | Phase 4（生成教学进程表时）**MANDATORY** | 教学进程学期编排规则（排课原则、学期模板、学时计算、5步生成法） |
-| `references/self-check-list.md` | Phase 5.3 **MANDATORY** | 输出自检清单（40项核对要求） |
-| `references/error-recovery.md` | Phase 5.3 自检未通过时 **必须加载** | 错误恢复详细说明（学时校验、图片嵌入、表格边框、课程映射等8类问题的修复步骤） |
+| `references/self-check-list.md` | Step 5.2（MD内容，转DOCX前）**MANDATORY** | 输出自检清单（两阶段：阶段一MD内容自检→阶段二DOCX格式自检，合计40+项核对要求） |
+| `references/error-recovery.md` | Step 5.2/5.4 任一阶段自检未通过时 **必须加载** | 错误恢复详细说明（学时校验、图片嵌入、表格边框、课程映射等8类问题的修复步骤） |
 | `references/template-chapters.md` | Phase 1 解析失败时的备选参考 | 人才培养方案标准章节结构模板 |
-| `references/人才培养方案模板.docx` | Phase 5.2（MD→DOCX转换时的格式参考） | 正式公文格式的 DOCX 样板 |
-| `scripts/create_curriculum_image.py` | Phase 5.1（生成课程体系架构图时） | 使用 PIL 绘制课程架构图脚本，自动列宽+换行+中文字体适配 |
-| `scripts/postprocess_docx.py` | Phase 5.2（pandoc转换后）**MANDATORY** | DOCX后处理：为所有表格添加边框、表头加粗居中、图片嵌入校验 |
+| `references/人才培养方案模板.docx` | Step 5.3（MD→DOCX转换时的格式参考） | 正式公文格式的 DOCX 样板 |
+| `scripts/create_curriculum_image.py` | Step 5.1（生成课程体系架构图时） | 使用 PIL 绘制课程架构图脚本，自动列宽+换行+中文字体适配 |
+| `scripts/postprocess_docx.py` | Step 5.3（pandoc转换后）**MANDATORY** | DOCX后处理：为所有表格添加边框、表头加粗居中、图片嵌入校验 |
 
 > **加载策略**：每个 Phase 开始时按 MANDATORY 标记加载对应文件。**Do NOT load** 未标记的文件以节省上下文。
 
@@ -636,11 +694,13 @@ Phase 0→1→2→3→Phase 4（职业面向合并策略→培养目标生成规
 
 - 脚本：见 [scripts/preprocess.py](scripts/preprocess.py)（用途：将PDF/DOCX/TXT输入文件预处理为纯文本，保留表格结构；参数：`<input_file> -o <output.md>`）
 - 脚本：见 [scripts/create_curriculum_image.py](scripts/create_curriculum_image.py)（用途：生成课程体系架构图PNG；参数：`--data <json_or_file> -o <output.png>`）
-- 脚本：见 [scripts/postprocess_docx.py](scripts/postprocess_docx.py)（用途：DOCX后处理——为所有表格添加边框、表头加粗居中、图片嵌入校验；Phase 5.2 **必须执行**）
+- 脚本：见 [scripts/postprocess_docx.py](scripts/postprocess_docx.py)（用途：DOCX后处理——为所有表格添加边框、表头加粗居中、图片嵌入校验；Step 5.3 **必须执行**）
 - 参考：见 [references/national-standards.md](references/national-standards.md)（Phase 2 **必须加载**）
 - 参考：见 [references/course-objective-generation.md](references/course-objective-generation.md)（Phase 4 生成表5/6/7时 **必须加载**）
+- 参考：见 [references/competition-certification.md](references/competition-certification.md)（Phase 4 生成证书/竞赛关联时 **必须加载**）
+- 参考：见 [references/implementation-guarantee.md](references/implementation-guarantee.md)（Phase 4 生成第8章实施保障时 **必须加载**）
 - 参考：见 [references/teaching-schedule-rules.md](references/teaching-schedule-rules.md)（Phase 4 生成教学进程表时 **必须加载**）
-- 参考：见 [references/self-check-list.md](references/self-check-list.md)（Phase 5.3 **必须加载**）
+- 参考：见 [references/self-check-list.md](references/self-check-list.md)（Step 5.2 **必须加载**——阶段一MD内容自检；Step 5.4 阶段二DOCX格式自检）
 - 参考：见 [references/error-recovery.md](references/error-recovery.md)（自检未通过时 **必须查阅并执行修复**）
 - 参考：见 [references/template-chapters.md](references/template-chapters.md)（Phase 1 解析失败时作为备选）
 - 资产：见 [assets/人才培养方案-中职模板.md](assets/人才培养方案-中职模板.md)（Phase 1 中职方案 **必须加载**）
@@ -649,10 +709,9 @@ Phase 0→1→2→3→Phase 4（职业面向合并策略→培养目标生成规
 
 ## 反模式（禁止行为）
 
-- 不得直接复制样例的专业名称/课程名称 —— 必须全部替换为目标专业内容
-- 不得省略样例中的任何一级/二级章节 —— 即使某章节材料缺失也要合理填充
-- 不得杜撰数据 —— 材料未提供的字段标注"（建议）"或"（根据教学规律估算）"
-- 不得混用口语化表达 —— 全程使用"立德树人""工学结合""岗课赛证融通"等规范术语
+- 不得直接复制样例的专业名称/课程名称 —— 必须全部替换为目标专业内容（样例是数字媒体等示例专业，残留其名称会导致方案文不对题，被学校评审直接退回）
+- 不得省略样例中的任何一级/二级章节 —— 即使某章节材料缺失也要合理填充（章节齐全性是上级部门审核方案的硬性形式要求，缺章即视为方案不完整）
+- 不得混用口语化表达 —— 全程使用"立德树人""工学结合""岗课赛证融通"等规范术语（评审专家按国标术语核对，口语化表述会被判定为专业性不足）
 - 不得忽略学时校验 —— 即使样例本身有误，也须按国标修正并备注说明
 - 不得将职业分析报告中的学习情境仅当作独立实训项目 —— 必须将其拆解融入对应专业课程的"主要内容"或"教学要求"中
 - 不得仅以教学标准课程清单作为最终课程体系 —— 必须同时整合职业分析报告的学习领域，对无对应课程的LD执行"学习领域转化"新增
@@ -674,6 +733,10 @@ Phase 0→1→2→3→Phase 4（职业面向合并策略→培养目标生成规
 - 不得改写表4公共基础课表中属于国家课程标准的内容 —— 必须从模板提取，仅允许专业名称替换和学时调整
 - 不得使用模糊表述作为课程目标条目（如"了解相关知识""具有维护能力"） —— 知识条目须为完整动词+宾语；能力条目须为"能力+行动"结构（"具有XX能力，能够完成XX任务"）；素质条目须可观测可评价
 - 不得在教学进程安排表中随意排课而不遵循基础先行、核心递进原则 —— 必须按学期编排规则编排
+- 不得编写不含课程思政元素的素质目标 —— 每门专业课程素质目标须含≥1个可识别的思政/职业素养元素（工匠精神/安全环保/职业道德/文化自信等），并与课程内容自然融合，禁止生搬硬套
+- 不得忽略"赛证融通" —— 职业分析报告中的职业技能等级证书须映射到支撑课程，证书考核点融入课程目标或主要内容，不得让证书与课程"两张皮"
+- 不得使用"1+X证书制度""X证书"表述 —— 1+X已退出试点，统一使用"职业技能等级证书/职业技能等级证书制度"（官方评审不再认可1+X术语，用错会被判定为政策滞后）
+- 不得从专业教学标准、职业分析报告提取或凭空推理"接续专业" —— 接续专业必须从专业简介获取（`assets/moe_pdfs_md/` 文件的"# 接续专业举例"章节，按专业代码定位）；专业简介未提供时基于专业目录推断并标注"（推断）"，禁止虚构专业代码
 
 ## 注意事项
 
