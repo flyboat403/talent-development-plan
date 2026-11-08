@@ -6,14 +6,14 @@
 
 数据源优先级（更新）：
 1. 职业教育专业目录.xlsx → 获取专业代码 + 专业类代码
-2. moe_pdfs_final.json（JSON索引） → 通过专业代码查 PDF URL
+2. moe_pdfs_final_github.json（JSON索引） → 通过专业代码查 PDF URL
 3. moe_pdfs_md/{类代码}*.md → 通过专业类代码查专业简介（备选）
 
 流程：
 1. 从 XLSX 获取专业代码和专业类代码
-2. 从 moe_pdfs_final.json 查找专业 → 得到 PDF URL
+2. 从 moe_pdfs_final_github.json 查找专业 → 得到 PDF URL
 3. 如果有 PDF URL，下载并解析 PDF
-4. 如果 moe_pdfs_final.json 中没有，则从 moe_pdfs_md 目录解析
+4. 如果 moe_pdfs_final_github.json 中没有，则从 moe_pdfs_md 目录解析
 """
 
 import json
@@ -383,7 +383,7 @@ def search_major(
     query: str,
     level: Optional[str] = None,
     xlsx_path: str = "assets/职业教育专业目录.xlsx",
-    json_path: str = "assets/moe_pdfs_final.json",
+    json_path: str = "assets/moe_pdfs_final_github.json",
     md_dir: str = "assets/moe_pdfs_md",
     output_path: Optional[str] = None,
     use_fallback: bool = True,
@@ -596,7 +596,7 @@ def main():
     parser.add_argument('--major', '-m', required=True, help='专业名称或代码')
     parser.add_argument('--level', '-l', help='教育层次（中职/高职/职教本科）')
     parser.add_argument('--xlsx', default='assets/职业教育专业目录.xlsx', help='XLSX专业目录路径')
-    parser.add_argument('--json', '-j', default='assets/moe_pdfs_final.json', help='JSON索引路径')
+    parser.add_argument('--json', '-j', default='assets/moe_pdfs_final_github.json', help='JSON索引路径')
     parser.add_argument('--md-dir', default='assets/moe_pdfs_md', help='MD备选目录')
     parser.add_argument('--output', '-o', help='输出文件路径')
     parser.add_argument('--no-pdf', action='store_true', help='不解析PDF，仅返回基本信息')

@@ -31,7 +31,7 @@ dependency:
 
 > 💡 **自动检索说明**：材料#2（专业教学标准）可由系统自动检索获取。系统内置以下数据源：
 > - `assets/职业教育专业目录.xlsx`（1443条专业记录）：根据专业名称和层次获取专业代码
-> - `assets/moe_pdfs_final.json`（579条PDF索引）：根据专业代码获取教学标准PDF URL
+> - `assets/moe_pdfs_final_github.json`（579条PDF索引，GitHub镜像）：根据专业代码获取教学标准PDF URL
 > - `assets/moe_pdfs_md/`（274个专业简介文件）：备选数据源，获取专业简介内容
 >
 > 检索优先级：**XLSX检索专业代码 → JSON检索PDF URL → MD检索专业简介 → 提示用户上传**
@@ -66,7 +66,7 @@ dependency:
         ↓
 Step 1: 从 XLSX 职业教育专业目录检索 → 专业代码 + 类别代码
         ↓
-Step 2: 用专业代码从 moe_pdfs_final.json 查询 PDF URL
+Step 2: 用专业代码从 moe_pdfs_final_github.json 查询 PDF URL
         ↓
 Step 3: 若无 PDF → 用类别代码从 moe_pdfs_md/ 查找专业简介
         ↓
