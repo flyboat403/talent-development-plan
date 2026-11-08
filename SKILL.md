@@ -30,9 +30,9 @@ dependency:
 | 3 | **职业分析报告** | ✅ | 该专业的岗位调研/职业分析报告（PDF/DOCX/TXT） |
 
 > 💡 **自动检索说明**：材料#2（专业教学标准）可由系统自动检索获取。系统内置以下数据源：
-> - `assets/职业教育专业目录.xlsx`（1443条专业记录）：根据专业名称和层次获取专业代码
+> - `assets/职业教育专业目录.xlsx`（1490条专业记录）：根据专业名称和层次获取专业代码
 > - `assets/moe_pdfs_final_github.json`（579条PDF索引，GitHub镜像）：根据专业代码获取教学标准PDF URL
-> - `assets/moe_jianjie_final_github.json`（1337条专业简介索引，GitHub镜像）：备选数据源，按专业代码获取专业简介 MD（`assets/moe_pdfs_md/` 为离线兜底）
+> - `assets/moe_jianjie_final_github.json`（1349条专业简介索引，GitHub镜像）：备选数据源，按专业代码获取专业简介 MD（`assets/moe_pdfs_md/` 为离线兜底）
 >
 > 检索优先级：**XLSX检索专业代码 → JSON检索PDF URL → MD检索专业简介 → 提示用户上传**
 >
