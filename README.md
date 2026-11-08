@@ -10,6 +10,7 @@
 
 | 能力 | 说明 |
 |------|------|
+| **教学标准 PDF 解析** | 自动下载 PDF 并解析专业名称、职业面向、培养目标/规格、课程设置、学时与学分换算规则 |
 | **自动检索教学标准** | 输入专业名称+层次，自动从内置库（1490条专业目录 / 579条PDF索引 / 275个专业简介）获取教学标准，无需手动上传 |
 | **双源融合生成** | 教学标准（课程/学时/培养目标） × 职业分析报告（岗位/学习领域LD/职业能力） → 逐章生成完整方案 |
 | **合规自动校验** | 学时、公共基础课比例、选修课比例、实践比例、周学时峰值全部按国标校验 |
@@ -139,10 +140,17 @@ talent-development-plan/
 │   ├── template-chapters.md          ← 标准章节结构模板（备选）
 │   └── 人才培养方案模板.docx         ← pandoc --reference-doc 格式参考
 ├── scripts/
-│   ├── search_major.py               ← 专业检索（XLSX → JSON → MD）
+│   ├── search_major.py               ← 检索入口（编排 + CLI）
+│   ├── catalog.py                    ← 专业目录 XLSX / PDF 索引 JSON 检索
+│   ├── jianjie.py                    ← 专业简介索引（在线下载 + 本地兜底）
+│   ├── md_parser.py                  ← 专业简介 Markdown 解析
+│   ├── pdf_parser.py                 ← 教学标准 PDF 下载与正文解析
+│   ├── netutil.py                    ← 安全下载（URL 校验/重定向/体积上限/缓存）
+│   ├── check_jianjie_snapshot.py     ← 简介快照完整性校验（文件数/字节/SHA-256）
 │   ├── preprocess.py                 ← 文档预处理（PDF/DOCX → Markdown）
 │   ├── create_curriculum_image.py    ← 课程体系架构图生成
 │   └── postprocess_docx.py           ← DOCX 后处理（表格边框/表头加粗/图片校验）
+├── tests/                            ← 单元测试（python3 -m unittest discover -s tests）
 └── test/                             ← 测试材料（机械加工技术、西餐烹饪）
 ```
 

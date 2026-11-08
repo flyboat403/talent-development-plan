@@ -668,6 +668,8 @@ Phase 0→1→2→3→Phase 4（职业面向合并策略→培养目标生成规
 | `references/error-recovery.md` | Step 5.2/5.4 任一阶段自检未通过时 **必须加载** | 错误恢复详细说明（学时校验、图片嵌入、表格边框、课程映射等8类问题的修复步骤） |
 | `references/template-chapters.md` | Phase 1 解析失败时的备选参考 | 人才培养方案标准章节结构模板 |
 | `references/人才培养方案模板.docx` | Step 5.3（MD→DOCX转换时的格式参考） | 正式公文格式的 DOCX 样板 |
+| `scripts/pdf_parser.py` | Phase 0.5（教学标准 PDF 解析时） | 下载教学标准 PDF 并解析名称/职业面向/培养目标/培养规格/课程/学时 |
+| `scripts/check_jianjie_snapshot.py` | 数据同步后 | 校验专业简介快照的文件数、字节数、SHA-256 与索引 1:1 对应 |
 | `scripts/create_curriculum_image.py` | Step 5.1（生成课程体系架构图时） | 使用 PIL 绘制课程架构图脚本，自动列宽+换行+中文字体适配 |
 | `scripts/postprocess_docx.py` | Step 5.3（pandoc转换后）**MANDATORY** | DOCX后处理：为所有表格添加边框、表头加粗居中、图片嵌入校验 |
 

@@ -73,7 +73,11 @@ def main() -> int:
         problems.append(f"SHA-256 不一致: 记录 {rec['sha']} ≠ 实际 {sha}")
 
     if INDEX.exists():
-        index = json.loads(INDEX.read_text(encoding='utf-8'))
+        try:
+            index = json.loads(INDEX.read_text(encoding='utf-8'))
+        except (json.JSONDecodeError, OSError) as e:
+            print(f"FAIL 索引文件无法解析: {INDEX} ({e})")
+            return 1
         index_names = {
             urllib.parse.unquote(e['md_url'].rsplit('/', 1)[-1])
             for e in index if e.get('md_url')
