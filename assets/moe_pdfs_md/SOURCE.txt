@@ -2,7 +2,7 @@
 ================================================
 
 【用途】
-  本目录是 assets/moe_jianjie_final_github.json（1337 条专业简介索引）的
+  本目录是 assets/moe_jianjie_final_github.json（1349 条专业简介索引）的
   本地离线副本，仅在以下三种情况被 scripts/search_major.py 使用：
     1. 索引文件缺失或无法读取
     2. 索引中无匹配条目
@@ -19,28 +19,22 @@
            如该仓库失效，本目录即为技能包唯一的专业简介内容来源。
 
 【快照信息】
-  抓取日期   : 2026-04-29
-  入库日期   : 2026-05-01（初始提交 4128329）
-  文件数     : 274（全部为 .md，无其他文件）
-  总字节数   : 3,449,042
+  首次抓取   : 2026-04-29（初始提交 4128329）
+  最近同步   : 2026-11-08（提交 fc87e87，补齐国控专业）
+  文件数     : 275（全部为 .md，无其他文件）
+  总字节数   : 3,693,843
 
 【完整性指纹】
   算法   : SHA-256，对文件名排序后依次 update(filename + "\0" + content)
-  指纹值 : cecc8bab3c6ef6bced82a665e5eb055a7d61e4b0431972cbd07c2e48d7f7dad0
+  指纹值 : 34a83f9d2f5bd712d11fbde7e31d135d899ca3a3521a1a0ed5aa078c8b045f1b
 
   核验命令（在项目根目录执行）：
-  python3 -c "
-import hashlib,os
-d='assets/moe_pdfs_md';h=hashlib.sha256()
-for f in sorted(x for x in os.listdir(d) if x.endswith('.md')):
-    b=open(os.path.join(d,f),'rb').read()
-    h.update(f.encode());h.update(b'\0');h.update(b)
-print(h.hexdigest())
-"
-  输出与上述指纹一致 → 目录未被修改。
+  python3 scripts/check_jianjie_snapshot.py
+  该脚本会同时校验：文件数、总字节数、SHA-256 指纹、索引条数、
+  以及索引与本地文件的 1:1 对应关系。输出 PASS 即全部一致。
 
 【与索引的对应关系】
-  本地文件数 274 == 索引中 md_url 去重后的文件名数 274
+  本地文件数 275 == 索引中 md_url 去重后的文件名数 275
   双向差集均为空（本地有而索引无 = 0；索引有而本地无 = 0）
   文件名规则 : {4位专业类代码}{专业类名}.md
               如 "7402餐饮类.md"、"6601 机械设计制造类.md"（部分含空格）
@@ -50,5 +44,7 @@ print(h.hexdigest())
   2. 镜像仓库内容更新（可用上面的核验命令对比指纹变化）
   3. 上游镜像仓库下线时，需另寻官方来源重新抓取
 
-  重新同步后须同步更新本文件中的：抓取日期、文件数、总字节数、SHA-256 指纹，
+  重新同步后：先运行 python3 scripts/check_jianjie_snapshot.py，
+  按输出更新本文件中的 同步日期、文件数、总字节数、SHA-256 指纹、索引条数，
   并确认 assets/moe_jianjie_final_github.json 中的 md_url 仍可访问。
+  注意：历史教训——数据同步提交曾遗漏本文件，导致自校验命令必然失败。
