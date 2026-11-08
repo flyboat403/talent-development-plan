@@ -11,7 +11,7 @@
 
 import io
 import re
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
@@ -60,7 +60,6 @@ class TeachingStandard:
     raw_text: str = ''
     source_url: str = ''
     source_file: str = ''
-    sections: List[Tuple[str, str]] = field(default_factory=list)
 
 
 def to_dict(standard: TeachingStandard) -> Dict:
@@ -189,7 +188,7 @@ def extract_sections(text: str) -> Dict:
     courses_body = _find_section(sections, '课程设置')
     hours_raw = _body_after_heading(cleaned, '学时安排') or _find_section(sections, '学时安排')
 
-    name_line = _join_paragraph(name_body)
+    name_line = re.sub(r'^(专业名称|专业代码)\s*[:：]?\s*', '', _join_paragraph(name_body))
     name_match = re.match(r'([^（(]+)', name_line)
     major_name = name_match.group(1).strip() if name_match else ''
     code_match = re.search(r'[（(](\d{6})[）)]', name_line)
@@ -253,7 +252,7 @@ def _build_standard(
         hours_section=data['hours_section'],
         total_hours=data['total_hours'],
         credit_conversion=data['credit_conversion'],
-        raw_text=text[:20000],
+        raw_text=text[:4000],
         source_url=source_url,
         source_file=source_file,
     )

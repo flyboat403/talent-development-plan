@@ -363,7 +363,7 @@ def main():
     parser.add_argument('--jianjie-json', default=JIANJIE_DEFAULT_PATH, help='专业简介索引路径')
     parser.add_argument('--md-dir', default=MD_DIR_DEFAULT, help='本地简介MD兜底目录')
     parser.add_argument('--output', '-o', help='输出文件路径')
-    parser.add_argument('--no-pdf', action='store_true', help='不解析PDF，仅返回基本信息')
+    parser.add_argument('--no-pdf', action='store_true', help='不解析PDF正文（仍会用专业简介补全内容）')
     parser.add_argument('--cache-dir', default=PDF_CACHE_DEFAULT, help='PDF缓存目录')
     parser.add_argument('--md-cache-dir', default=MD_CACHE_DEFAULT, help='专业简介MD缓存目录')
     parser.add_argument('--refresh-cache', action='store_true', help='忽略本地缓存重新下载')

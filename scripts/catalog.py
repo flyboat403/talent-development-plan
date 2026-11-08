@@ -51,7 +51,7 @@ def search_from_xlsx(query: str, level: str, df: Any) -> Dict:
     df_level = df[df['层次'].str.contains(xlsx_level, na=False)]
 
     for frame in (df_level[df_level['专业名称'] == query],
-                  df_level[df_level['专业名称'].str.contains(query, na=False)]):
+                  df_level[df_level['专业名称'].str.contains(query, na=False, regex=False)]):
         if len(frame) == 1:
             entry = _row_to_entry(frame.iloc[0])
             entry.update({"success": True, "alternatives": []})
