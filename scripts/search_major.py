@@ -264,6 +264,21 @@ def _validate_download_url(md_url: str) -> bool:
                 or ip.is_reserved or ip.is_multicast)
 
 
+class _ValidatingRedirectHandler(urllib.request.HTTPRedirectHandler):
+    """重定向逐跳校验，防止公网链接跳转到内网/回环地址"""
+    max_redirections = 5
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        if not _validate_download_url(newurl):
+            raise urllib.error.URLError(
+                f"拒绝重定向到非公网地址: {newurl[:80]}"
+            )
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+_OPENER = urllib.request.build_opener(_ValidatingRedirectHandler)
+
+
 def _write_cache(cache_dir: Path, cache_name: str, content: str) -> None:
     try:
         base = cache_dir.resolve()
@@ -323,7 +338,7 @@ def download_md_content(
             req = urllib.request.Request(
                 md_url, headers={'User-Agent': 'talent-development-plan/1.0'}
             )
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
+            with _OPENER.open(req, timeout=timeout) as resp:
                 declared = resp.headers.get('Content-Length')
                 if declared:
                     try:
