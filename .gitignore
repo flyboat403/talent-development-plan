@@ -19,3 +19,6 @@ references/images/
 .sisyphus/boulder.json
 AGENTS.md
 references/images/
+
+# Runtime caches (PDF/简介 downloads)
+temp/

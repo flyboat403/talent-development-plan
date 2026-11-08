@@ -124,7 +124,8 @@ talent-development-plan/
 ├── assets/
 │   ├── 职业教育专业目录.xlsx         ← 1443 条专业记录
 │   ├── moe_pdfs_final_github.json    ← 579 条教学标准 PDF 索引（GitHub 镜像）
-│   ├── moe_pdfs_md/*.md              ← 274 个专业简介文件
+│   ├── moe_jianjie_final_github.json ← 1337 条专业简介索引（GitHub 镜像）
+│   ├── moe_pdfs_md/*.md              ← 274 个专业简介文件（离线兜底）
 │   ├── 人才培养方案-中职模板.md      ← 中职格式模板（含表4公共基础课）
 │   └── 人才培养方案-高职模板.md      ← 高职格式模板
 ├── references/
